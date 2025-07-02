@@ -31,23 +31,20 @@ else
 fi
 
 [ -e /etc/ros/rosdep/sources.list.d/20-default.list ] || sudo rosdep init
-rosdep update || echo "⚠️ rosdep update 실패: 무시하고 설치 계속 진행"
-
-# 환경변수 적용
-if [ -f "/opt/ros/$CHOOSE_ROS_DISTRO/setup.bash" ]; then
-    source /opt/ros/$CHOOSE_ROS_DISTRO/setup.bash
-else
-    echo "⚠️ setup.bash 없음: 환경변수 설정 생략"
-fi
+rosdep update || echo "⚠️ rosdep update 실패: 설치 계속 진행"
 
 grep -F "source /opt/ros/$CHOOSE_ROS_DISTRO/setup.bash" ~/.bashrc || \
   echo "source /opt/ros/$CHOOSE_ROS_DISTRO/setup.bash" >> ~/.bashrc
 grep -F "source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash" ~/.bashrc || \
   echo "source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash" >> ~/.bashrc
 
-source /opt/ros/$CHOOSE_ROS_DISTRO/setup.bash
+if [ -f "/opt/ros/$CHOOSE_ROS_DISTRO/setup.bash" ]; then
+  source /opt/ros/$CHOOSE_ROS_DISTRO/setup.bash
+else
+  echo "⚠️ setup.bash 없음: 환경변수 설정 생략"
+fi
 
-# 설치 확인용 talker 노드 자동 테스트
+# 🔒 설치 확인용 talker 자동 실행은 주석 처리
 # expect << EOF
 # set timeout -1
 # set line_count 0
@@ -77,19 +74,28 @@ echo "✅ Terminator 설치 완료 (명령어: terminator)"
 ##########################################
 echo "🔌 [3/4] Arduino IDE 설치 중..."
 sudo apt install -y fonts-nanum fonts-nanum-coding fonts-noto-cjk language-pack-ko
+
 wget https://downloads.arduino.cc/arduino-1.8.19-linux64.tar.xz
 tar -xf arduino-1.8.19-linux64.tar.xz
 sudo mv arduino-1.8.19 /opt/
 cd /opt/arduino-1.8.19
 sudo ./install.sh
+cd ~
+
 mkdir -p ~/.arduino15
 touch ~/.arduino15/preferences.txt
+
 if ! grep -q "editor.font" ~/.arduino15/preferences.txt; then
-  echo "editor.font=D2Coding,plain,14" >> ~/.arduino15/preferences.txt
+  echo "editor.font=NanumGothicCoding,plain,14" >> ~/.arduino15/preferences.txt
+  echo ">> 폰트 설정 추가됨: NanumGothicCoding, 14pt"
+else
+  echo ">> 기존 폰트 설정 존재함, 변경하지 않음"
 fi
+
 sudo update-locale LANG=ko_KR.UTF-8
 export LANG=ko_KR.UTF-8
 export LC_ALL=ko_KR.UTF-8
+
 echo "✅ Arduino 설치 완료 (메뉴에서 'Arduino IDE' 검색)"
 
 ##########################################
