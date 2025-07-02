@@ -76,7 +76,7 @@ echo "✅ Terminator 설치 완료 (명령어: terminator)"
 # 3. Arduino IDE 설치
 ##########################################
 echo "🔌 [3/4] Arduino IDE 설치 중..."
-sudo apt install -y fonts-noto-cjk fonts-nanum fonts-d2coding language-pack-ko
+sudo apt install -y fonts-nanum fonts-nanum-coding fonts-noto-cjk language-pack-ko
 wget https://downloads.arduino.cc/arduino-1.8.19-linux64.tar.xz
 tar -xf arduino-1.8.19-linux64.tar.xz
 sudo mv arduino-1.8.19 /opt/
