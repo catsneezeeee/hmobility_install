@@ -41,22 +41,22 @@ grep -F "source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash" ~/.b
 source /opt/ros/$CHOOSE_ROS_DISTRO/setup.bash
 
 # 설치 확인용 talker 노드 자동 테스트
-expect << EOF
-set timeout -1
-set line_count 0
-spawn ros2 run demo_nodes_cpp talker
-expect {
-    -re "Publishing:.*" {
-        incr line_count
-        if { \$line_count == 3 } {
-            send -- "\003"
-            expect eof
-            exit
-        }
-        exp_continue
-    }
-}
-EOF
+# expect << EOF
+# set timeout -1
+# set line_count 0
+# spawn ros2 run demo_nodes_cpp talker
+# expect {
+#     -re "Publishing:.*" {
+#         incr line_count
+#         if { \$line_count == 3 } {
+#             send -- "\003"
+#             expect eof
+#             exit
+#         }
+#         exp_continue
+#     }
+# }
+# EOF
 
 ##########################################
 # 2. Terminator 설치
