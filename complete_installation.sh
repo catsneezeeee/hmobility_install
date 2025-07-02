@@ -31,7 +31,14 @@ else
 fi
 
 [ -e /etc/ros/rosdep/sources.list.d/20-default.list ] || sudo rosdep init
-rosdep update
+rosdep update || echo "⚠️ rosdep update 실패: 무시하고 설치 계속 진행"
+
+# 환경변수 적용
+if [ -f "/opt/ros/$CHOOSE_ROS_DISTRO/setup.bash" ]; then
+    source /opt/ros/$CHOOSE_ROS_DISTRO/setup.bash
+else
+    echo "⚠️ setup.bash 없음: 환경변수 설정 생략"
+fi
 
 grep -F "source /opt/ros/$CHOOSE_ROS_DISTRO/setup.bash" ~/.bashrc || \
   echo "source /opt/ros/$CHOOSE_ROS_DISTRO/setup.bash" >> ~/.bashrc
